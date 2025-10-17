@@ -1,11 +1,8 @@
 {
-  "version": 2,
-  "functions": {
-    "api/**/*.js": {
-      "runtime": "vercel-node@3"
-    }
-  },
-  "routes": [
-    { "src": "/(.*)", "dest": "/api/index.js" }
-  ]
+  "name": "valb-mig",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  }
 }

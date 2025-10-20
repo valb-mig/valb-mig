@@ -66,7 +66,7 @@ export default async function handler(req, res) {
     <text x="16" y="70" font-family="Courier New, monospace" font-size="14" fill="#e6edf3">${tspans}</text>`;
 
   const fullSvg = `
-  <svg xmlns="http://www.w3.org/2000/svg" width="960" height="760" viewBox="0 0 1160 760" style="overflow: visible;">
+  <svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1160" viewBox="0 0 960 560" style="overflow: visible;">
     <defs>
       <style>
         text {

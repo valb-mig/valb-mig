@@ -56,8 +56,11 @@ export default async function handler(req, res) {
     .join('');
 
   const innerSvg = `
-    <rect width="460" height="260" rx="10" ry="10" fill="#000000aa"/>
-    <rect width="460" height="32" rx="10" ry="10" fill="#000000ff"/>
+    <rect width="460" height="260" rx="10" ry="10" fill="#010409"
+      stroke="#212830"
+      stroke-width="2"
+    />
+    <rect width="460" height="32" rx="10" ry="10" fill="#151B23"/>
     <circle cx="20" cy="16" r="6" fill="#ff5f56"/>
     <circle cx="40" cy="16" r="6" fill="#ffbd2e"/>
     <circle cx="60" cy="16" r="6" fill="#27c93f"/>
@@ -79,8 +82,11 @@ export default async function handler(req, res) {
     </defs>
  
     <g id="main-terminal">
-      <rect x="0" y="0" width="820" height="502" rx="10" ry="10" fill="#000000aa"/>
-      <rect x="0" y="0" width="820" height="32" rx="10" ry="10" fill="#000000ff"/>
+      <rect x="0" y="0" width="820" height="502" rx="10" ry="10" fill="#010409"
+        stroke="#212830"
+        stroke-width="2"
+      />
+      <rect x="0" y="0" width="820" height="32" rx="10" ry="10" fill="#151B23"/>
       <circle cx="20" cy="16" r="6" fill="#ff5f56"/>
       <circle cx="40" cy="16" r="6" fill="#ffbd2e"/>
       <circle cx="60" cy="16" r="6" fill="#27c93f"/>

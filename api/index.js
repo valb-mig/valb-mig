@@ -12,10 +12,21 @@ export default async function handler(req, res) {
   const reposRes = await fetch(`https://api.github.com/users/${username}/repos?per_page=100`, { headers });
   const repos = await reposRes.json();
 
+  // Linguagens e estrelas
+  const languageBytes = {};
   let stars = 0;
   for (const repo of repos) {
     stars += repo.stargazers_count;
+    if (repo.language) {
+      languageBytes[repo.language] = (languageBytes[repo.language] || 0) + 1;
+    }
   }
+
+  const topLangs = Object.entries(languageBytes)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 3)
+    .map(([lang]) => lang)
+    .join(", ");
 
   // 2️⃣ Pull Requests
   const prsRes = await fetch(`https://api.github.com/search/issues?q=type:pr+author:${username}`, { headers });
@@ -40,6 +51,8 @@ export default async function handler(req, res) {
   // 5️⃣ ASCII final 😎
   const ascii = `
 ╭───────────────────────────────╮
+│ user        │ ${username}
+│ langs       │ ${topLangs}
 │ commits     │ ${commits ?? "??"}
 │ stars       │ ${stars}
 │ pull reqs   │ ${prs}

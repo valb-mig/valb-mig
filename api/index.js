@@ -49,17 +49,43 @@ export default async function handler(req, res) {
   const { total_count: commits } = await commitsRes.json();
 
   // 5️⃣ ASCII final 😎
-  const ascii = `
-╭───────────────────────────────╮
-│ user        │ ${username}
-│ langs       │ ${topLangs}
-│ commits     │ ${commits ?? "??"}
-│ stars       │ ${stars}
-│ pull reqs   │ ${prs}
-│ issues      │ ${issues}
-╰───────────────────────────────╯
-`;
+  const ascii = [
+      `╭───────────────────────────────╮`,
+      `│ user        │ ${username}`,
+      `│ langs       │ ${topLangs}`,
+      `│ commits     │ ${commits ?? "??"}`,
+      `│ stars       │ ${stars}`,
+      `│ pull reqs   │ ${prs}`,
+      `│ issues      │ ${issues}`,
+      `╰───────────────────────────────╯`,
+  ];
 
-  res.setHeader("Content-Type", "text/plain; charset=utf-8");
-  res.status(200).send(ascii);
+    const lineHeight = 18;
+    const padding = 12;
+    const width = 820;
+    const height = padding * 2 + ascii.length * lineHeight;
+
+    // Escape XML chars (just in case)
+    const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+    // Build <tspan> per line for crisp monospace rendering
+    const tspans = ascii.map((ln, i) => `<tspan x="${padding}" dy="${i === 0 ? '1em' : '1.15em'}">${esc(ln)}</tspan>`).join('');
+
+  const svg = `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+  <rect width="100%" height="100%" fill="#0b0f14"/>
+  <g font-family="Courier New, monospace" font-size="14" fill="#e6edf3">
+    <text x="${padding}" y="${padding}" xml:space="preserve">
+      ${tspans}
+    </text>
+  </g>
+  <!-- small footer -->
+  <text x="${width - 12}" y="${height - 6}" font-family="sans-serif" font-size="10" fill="#6b7280" text-anchor="end">
+    Updated: ${new Date().toISOString().slice(0,19).replace('T',' ')}
+  </text>
+</svg>`;
+
+  res.setHeader('Content-Type', 'image/svg+xml; charset=utf-8');
+  res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=7200');
+  res.status(200).send(svg);
 }

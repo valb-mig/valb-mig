@@ -40,7 +40,10 @@ const LAPTOP = [
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
 async function getJSON(url) {
-  const res = await fetch(url, { headers: { 'User-Agent': 'valb-mig-readme', Accept: 'application/json' }, signal: AbortSignal.timeout(5000) });
+  const headers = { 'User-Agent': 'valb-mig-readme', Accept: 'application/json' };
+  // Na GitHub Action o token evita o limite de 60 requisições por hora dos runners compartilhados.
+  if (process.env.GITHUB_TOKEN && url.startsWith('https://api.github.com/')) headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
+  const res = await fetch(url, { headers, signal: AbortSignal.timeout(5000) });
   if (!res.ok) throw new Error(`${url}: HTTP ${res.status}`);
   return res.json();
 }
@@ -111,18 +114,22 @@ export function render({ waka, user, stars }) {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="valb@arch neofetch: setup, WakaTime e GitHub"><defs><style>${css}</style>${defs}</defs>${out.join('')}</svg>`;
 }
 
-export default async function handler(req, res) {
+/** Busca WakaTime e GitHub; o que falhar vem como null. */
+export async function collect() {
   const [waka, user, repos] = await Promise.allSettled([
     getJSON(WAKATIME_URL),
     getJSON(`https://api.github.com/users/${USER}`),
     getJSON(`https://api.github.com/users/${USER}/repos?per_page=100`),
   ]);
-  const stars = repos.status === 'fulfilled' ? repos.value.filter((r) => !r.fork).reduce((n, r) => n + r.stargazers_count, 0) : 0;
-  const svg = render({
+  return {
     waka: waka.status === 'fulfilled' ? waka.value : null,
     user: user.status === 'fulfilled' ? user.value : null,
-    stars,
-  });
+    stars: repos.status === 'fulfilled' ? repos.value.filter((r) => !r.fork).reduce((n, r) => n + r.stargazers_count, 0) : 0,
+  };
+}
+
+export default async function handler(req, res) {
+  const svg = render(await collect());
   res.setHeader('Content-Type', 'image/svg+xml; charset=utf-8');
   res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
   res.status(200).send(svg);

@@ -17,7 +17,7 @@
   <img src="assets/title-setup.svg" width="100%" alt="01 // Setup">
 </picture>
 
-<img src="https://valb-mig.vercel.app/api/fetch" width="100%" alt="neofetch: Arch Linux, bspwm, zsh, kitty, VS Code, nvim and Claude Code. WakaTime from the last 7 days and GitHub numbers.">
+<img src="assets/neofetch.svg" width="100%" alt="neofetch: Arch Linux, bspwm, zsh, kitty, VS Code, nvim and Claude Code. WakaTime from the last 7 days and GitHub numbers.">
 
 <br>
 

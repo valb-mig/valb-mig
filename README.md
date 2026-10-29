@@ -3,9 +3,8 @@
 </div>
 
 <p align="center">
-  <a href="mailto:valb-mig@gmail.com"><img src="assets/btn-contact.svg" height="40" alt="contact me"></a>
-  <a href="https://ivalber-miguel.vercel.app/"><img src="assets/btn-portfolio.svg" height="40" alt="portfolio"></a>
-  <a href="https://valb-blog.vercel.app/"><img src="assets/btn-blog.svg" height="40" alt="blog"></a>
+  <a href="mailto:valb.mig@gmail.com"><img src="assets/btn-contact.svg" height="40" alt="contact me"></a>
+  <a href="https://www.valbmig.com.br/"><img src="assets/btn-portfolio.svg" height="40" alt="portfolio"></a>
   <a href="https://www.linkedin.com/in/valb-mig/"><img src="assets/btn-linkedin.svg" height="40" alt="linkedin"></a>
   <a href="https://www.instagram.com/valb.mig/"><img src="assets/btn-instagram.svg" height="40" alt="instagram"></a>
 </p>
